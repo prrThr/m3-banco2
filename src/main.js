@@ -1,18 +1,10 @@
 const express = require("express");
+const app = express();
 const { Client } = require("cassandra-driver");
-const mysql = require("mysql2");
+const con = require('../config/mysql');
+const credentials_datastax = require ('../config/datastax');
 
 // ---------------------------------------------------------------------------------------- //
-
-const MYSQL_IP = "localhost";
-const MYSQL_LOGIN = "root";
-const MYSQL_PASSWORD = "galinha20";
-let con = mysql.createConnection({
-  host: MYSQL_IP,
-  user: MYSQL_LOGIN,
-  password: MYSQL_PASSWORD,
-  database: "sakila",
-});
 
 con.connect(function (err) {
   if (err) throw err;
@@ -21,16 +13,7 @@ con.connect(function (err) {
 
 // ---------------------------------------------------------------------------------------- //
 
-const credentials_datastax = {
-  clientId: "YToWIPLMpDigFUfsLTFtIXHW",
-  secret:
-    "mhmuUE9dEekoxiKr,Nm760WoKgiCK4mN3gM41DEtFCf3+zu4A5c0ubUNM+ErgZ.JKPEAq1vkH_bmRWfXKm4Hjy2C8XqnRFXRsFauJ722j1wJ8XPKKu9WxnS4.L7Ket0E",
-  token:
-    "AstraCS:YToWIPLMpDigFUfsLTFtIXHW:5c9da7d66d2af25fb2dbd52e6fae8e25e3d12245f17bc5ec69fa5414b9046c30",
-};
-
-const app = express();
-app.listen(9037); //initialize web server
+app.listen(9037); // initialize web server
 // http://localhost:9037/get_customers_rentals
 
 async function run() {
