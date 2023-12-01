@@ -11,18 +11,32 @@ const PORT = 9037;
 const employeesQuery = `SELECT * FROM employees ORDER BY emp_no LIMIT 100`;
 const employeesInsertQuery =
   "INSERT INTO employees (emp_no, birth_date, first_name, last_name, gender, hire_date) VALUES (?, ?, ?, ?, ?, ?)";
-const employeesParams = ['emp_no', 'birth_date', 'first_name', 'last_name', 'gender', 'hire_date'];
+const employeesParams = [
+  "emp_no",
+  "birth_date",
+  "first_name",
+  "last_name",
+  "gender",
+  "hire_date",
+];
 
 // -------------------------------------------------------------- //
 
 const departmentsQuery = "SELECT * FROM departments";
 const departmentsInsertQuery =
-  "INSERT INTO departments (dept_no, dept_name) VALUES (?, ?)";
-const departmentsParams = ['dept_no', 'dept_name'];
+  "INSERT INTO departments (dept_no, dept_name) VALUES (?, ?) IF NOT EXISTS";
+const departmentsParams = ["dept_no", "dept_name"];
 
 // -------------------------------------------------------------- //
 
-async function transferData(tableName, connection, tableQuery, client, insertQuery, tableParams) {
+async function transferData(
+  tableName,
+  connection,
+  tableQuery,
+  client,
+  insertQuery,
+  tableParams
+) {
   console.log(`Iniciando a transferência de dados (${tableName})...`);
 
   try {
@@ -34,12 +48,18 @@ async function transferData(tableName, connection, tableQuery, client, insertQue
     }
 
     for (const row of results) {
-      console.log("Row: ", row);
-      var params = tableParams.map(param => row[param]);
-      //let i = 0;
-      //console.log(i + " " + params);
-      //i++;
-      await client.execute(insertQuery, params, { prepare: true });
+      //console.log("Row: ", row);
+      var params = tableParams.map((param) => row[param]);
+      const resultQuery = await client.execute(insertQuery, params, {
+        prepare: true,
+      });
+
+      /*let i = 0;
+      if (resultQuery.first === null) {
+        console.log("Dado inserido com sucesso: ", row);
+      } else {
+        console.log("Dado já existente, não inserido: ", row);
+      }*/
     }
 
     console.log(
@@ -52,18 +72,15 @@ async function transferData(tableName, connection, tableQuery, client, insertQue
 
 // ---------------------------------------------------------------------------------------- //
 
-
 con.connect(function (err) {
   if (err) throw err;
   console.log("Connection with mysql established");
 });
 
-
-app.listen(PORT, () => {
-  console.log("Server running in port " + PORT)
+let server = app.listen(PORT, () => {
+  console.log("Server running in port " + PORT);
 });
 // http://localhost:9037/get_customers_rentals
-
 
 const client = new Client({
   cloud: {
@@ -78,13 +95,12 @@ const client = new Client({
 // ---------------------------------------------------------------------------------------- //
 
 async function run() {
-  
   try {
-    await client.connect();  
+    await client.connect();
   } catch (error) {
     console.log("CLIENT não conseguiu conectar: " + error);
   }
-  
+
   await client.execute("use m3");
 
   const createSalariesTableQuery = `
@@ -148,8 +164,14 @@ async function run() {
   //await client.execute(createDeptManagerTableQuery);
   //await client.execute(createDeptEmpTableQuery);
   //await processarDados(client);
-  await transferData("departments", con, departmentsQuery, client, departmentsInsertQuery, departmentsParams);
-
+  await transferData(
+    "employees",
+    con,
+    employeesQuery,
+    client,
+    employeesInsertQuery,
+    employeesParams
+  );
 
   app.get("/get_employees", async function (req, res) {
     await client.connect();
@@ -197,47 +219,19 @@ async function run() {
     res.send(JSON.stringify(result.rows));
   });
 
-
   app.get("/quit", async function (req, res) {
     try {
-      console.log("Clossing APP and CLIENT...")  
+      console.log("Clossing APP and CLIENT...");
       await closeAll();
     } catch (error) {
-      console.log("Problem with closing: ", error)
+      console.log("Problem with closing: ", error);
     }
-    
-    
-  })
+  });
   client.shutdown();
-  app.close();
+  server.close();
 }
-
 
 // ----------------------------------------------------------------------------------- //
-
-async function processarDados(client) {
-  console.log("Iniciando a transferência de dados...");
-  const query = `SELECT * FROM employees ORDER BY emp_no LIMIT 100`;
-  try {
-    const [results] = await con.promise().query(query);
-    if (results.length === 0) {
-      console.log("Nenhum dado novo encontrado.");
-      return;
-    }
-
-    //results.sort((a, b) => a.emp_no - b.emp_no);
-
-    for (const row of results) {
-      const insertQuery =
-        "INSERT INTO employees (emp_no, birth_date, first_name, last_name, gender, hire_date) VALUES (?, ?, ?, ?, ?, ?)";
-      const params = [row.emp_no, row.birth_date, row.first_name, row.last_name, row.gender, row.hire_date];
-      await client.execute(insertQuery, params, { prepare: true });
-    }
-    console.log("Dados inseridos com sucesso no Cassandra.");
-  } catch (error) {
-    console.error("Erro ao processar dados:", error);
-  }
-}
 
 async function closeAll(client, app) {
   client.shutdown();
@@ -246,4 +240,3 @@ async function closeAll(client, app) {
 // ----------------------------------------------------------------------------------- //
 
 run();
-

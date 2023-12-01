@@ -1,12 +1,14 @@
 export const employeesQuery = `SELECT * FROM employees ORDER BY emp_no LIMIT 100`;
-export const employeesInsertQuery = "INSERT INTO employees (emp_no, birth_date, first_name, last_name, gender, hire_date) VALUES (?, ?, ?, ?, ?, ?)";
-export const employeesParams = [ row.emp_no, row.birth_date, row.first_name, row.last_name, row.gender, row.hire_date ];
+export const employeesInsertQuery =
+  "INSERT INTO employees (emp_no, birth_date, first_name, last_name, gender, hire_date) VALUES (?, ?, ?, ?, ?, ?)";
+export const employeesParams = ['emp_no', 'birth_date', 'first_name', 'last_name', 'gender', 'hire_date'];
 
 // -------------------------------------------------------------- //
 
 export const departmentsQuery = "SELECT * FROM departments";
-export const departmentsInsertQuery = "INSERT INTO departments (dept_no, dept_name) VALUES (?, ?)";
-export const departmentsParams = [ row.dept_no, row.dept_name ];
+export const departmentsInsertQuery =
+  "INSERT INTO departments (dept_no, dept_name) VALUES (?, ?)";
+export const departmentsParams = ['dept_no', 'dept_name'];
 
 // -------------------------------------------------------------- //
 
@@ -20,11 +22,10 @@ export async function transferData(tableName, connection, tableQuery, client, in
       return;
     }
 
-    //results.sort((a, b) => a.emp_no - b.emp_no);
-
-    results.forEach({
-      await: client.execute(insertQuery, tableParams, { prepare: true }),
-    });
+    for (const row of results) {
+      var params = tableParams.map(param => row[param]); // Use row[param]
+      await client.execute(insertQuery, params, { prepare: true });
+    }
 
     console.log(
       `Dados da tabela ${tableName} inseridos com sucesso no Cassandra.`
