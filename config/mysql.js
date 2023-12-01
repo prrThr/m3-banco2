@@ -1,15 +1,15 @@
 require('dotenv').config();
 const mysql = require("mysql2");
 
-const MYSQL_IP = process.env.MYSQL_IP;
-const MYSQL_LOGIN = process.env.MYSQL_LOGIN;
-const MYSQL_PASSWORD = process.env.MYSQL_PASSWORD;
-const DATABASE = process.env.DATABASE;
+const IP = process.env.MYSQL_IP;
+const LOGIN = process.env.MYSQL_LOGIN;
+const PASSWORD = process.env.MYSQL_PASSWORD;
+const DATABASE = process.env.MYSQL_DATABASE;
 
 let con = mysql.createConnection({
-  host: MYSQL_IP,
-  user: MYSQL_LOGIN,
-  password: MYSQL_PASSWORD,
+  host: IP,
+  user: LOGIN,
+  password: PASSWORD,
   database: DATABASE
 });
 

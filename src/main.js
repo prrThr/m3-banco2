@@ -3,15 +3,23 @@ const app = express();
 const { Client } = require("cassandra-driver");
 const con = require("../config/mysql");
 const credentials_datastax = require("../config/datastax");
+const PORT = 9037;
+
 // ---------------------------------------------------------------------------------------- //
+
 con.connect(function (err) {
   if (err) throw err;
   console.log("Connection with mysql established");
 });
-// ---------------------------------------------------------------------------------------- //
-app.listen(9037);
+
+
+app.listen(PORT, () => {
+  console.log("Server running in port " + PORT)
+});
 // http://localhost:9037/get_customers_rentals
+
 // ---------------------------------------------------------------------------------------- //
+
 async function run() {
   const client = new Client({
     cloud: {
@@ -22,7 +30,13 @@ async function run() {
       password: credentials_datastax.secret,
     },
   });
-  await client.connect();
+  
+  try {
+    await client.connect();  
+  } catch (error) {
+    console.log("CLIENT não conseguiu conectar: " + error);
+  }
+  
   await client.execute("use m3");
 
   const createSalariesTableQuery = `
@@ -89,14 +103,20 @@ async function run() {
   await client.shutdown();
 }
 
+
+// ----------------------------------------------------------------------------------- //
+
 async function processarDados(client) {
-  const query = `SELECT * FROM employees LIMIT 100`;
+  console.log("Iniciando a transferência de dados...");
+  const query = `SELECT * FROM employees ORDER BY emp_no LIMIT 100`;
   try {
     const [results] = await con.promise().query(query);
     if (results.length === 0) {
       console.log("Nenhum dado novo encontrado.");
       return;
     }
+
+    //results.sort((a, b) => a.emp_no - b.emp_no);
 
     for (const row of results) {
       const insertQuery =
@@ -109,4 +129,6 @@ async function processarDados(client) {
     console.error("Erro ao processar dados:", error);
   }
 }
+
+
 run();
