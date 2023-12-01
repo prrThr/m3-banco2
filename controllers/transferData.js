@@ -1,37 +1,35 @@
-async function transferData(tableName, connection, tableQuery, client, insertQuery, tableParams) {
+async function transferData(req, res) {
+  const tableName = "departments"; // Substitua pelo nome da tabela conforme necessário
+
   console.log(`Iniciando a transferência de dados (${tableName})...`);
 
   try {
-    const [results] = await connection.promise().query(tableQuery);
-    //console.log(results);
+    const [results] = await req.mysqlConnection.promise().query(`SELECT * FROM ${tableName}`);
+
     if (results.length === 0) {
       console.log(`Nenhum dado novo encontrado na tabela ${tableName}.`);
-      return;
+      return res.status(200).json({ message: `Nenhum dado novo encontrado na tabela ${tableName}.` });
     }
 
     for (const row of results) {
-      //console.log("Row: ", row);
-      var params = tableParams.map((param) => row[param]);
-      const resultQuery = await client.execute(insertQuery, params, {
-        prepare: true,
-      });
+      const params = ["dept_no", "dept_name"];
+      await req.cassandraClient.execute(
+        "INSERT INTO departments (dept_no, dept_name) VALUES (?, ?) IF NOT EXISTS",
+        params,
+        { prepare: true }
+      );
 
-      /*let i = 0;
-        if (resultQuery.first === null) {
-          console.log("Dado inserido com sucesso: ", row);
-        } else {
-          console.log("Dado já existente, não inserido: ", row);
-        }*/
+      console.log("Dado inserido com sucesso: ", row);
     }
 
-    console.log(
-      `Dados da tabela ${tableName} inseridos com sucesso no Cassandra.`
-    );
+    console.log(`Dados da tabela ${tableName} processados com sucesso no Cassandra.`);
+    return res.status(200).json({ message: `Dados da tabela ${tableName} processados com sucesso no Cassandra.` });
   } catch (error) {
     console.error(`Erro ao processar dados (${tableName}):`, error);
+    return res.status(500).json({ error: `Erro ao processar dados (${tableName}).` });
   }
 }
 
 module.exports = {
   transferData
-}
+};

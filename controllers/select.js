@@ -1,5 +1,13 @@
-export async function selectEmployees (req, res) {
-  await client.connect();
+
+// ---------------------------------------- //
+
+async function selectEmployees (req, res, client) {
+  try {
+    await client.connect();
+  } catch (error) {
+    console.log("CLIENT não conseguiu conectar: " + error);
+  }
+
   const sql_select = "select * from employees";
   let query = sql_select;
   let parameters = []; //req.query.customer
@@ -23,11 +31,15 @@ export async function selectEmployees (req, res) {
 
 // ---------------------------------------------------------------------------------- // 
 
-export async function selectDepartments (req, res) {
-  await client.connect();
+async function selectDepartments (req, res, client) {
+  try {
+    await client.connect();
+  } catch (error) {
+    console.log("CLIENT não conseguiu conectar: " + error);
+  }
   const sql_select = "select * from departments";
   let query = sql_select;
-  let parameters = []; //req.query.customer
+  let parameters = [];
   let result = await client.execute(query, parameters);
   console.log("total sync: ", result.rows.length);
   //CORS
@@ -48,14 +60,7 @@ export async function selectDepartments (req, res) {
 
 // ---------------------------------------------------------------------------------- // 
 
-export async function quit (req, res) {
-  try {
-    console.log("Clossing APP and CLIENT...");
-    client.shutdown();
-    server.close();
-  } catch (error) {
-    console.log("Problem with closing: ", error);
-  }
-};
-
-
+module.exports = {
+  selectEmployees,
+  selectDepartments
+}
