@@ -1,11 +1,11 @@
-async function selectEmployees (req, res, client) {
+async function selectAll (req, res, client, tableName) {
   try {
     await client.connect();
   } catch (error) {
     console.log("CLIENT não conseguiu conectar: " + error);
   }
 
-  const sql_select = "SELECT * FROM employees";
+  const sql_select = `SELECT * FROM ${tableName}`;
   let query = sql_select;
   let parameters = []; //req.query.customer
   let result = await client.execute(query, parameters);
@@ -58,6 +58,6 @@ async function selectDepartments (req, res, client) {
 // ---------------------------------------------------------------------------------- // 
 
 module.exports = {
-  selectEmployees,
+  selectAll,
   selectDepartments
 }

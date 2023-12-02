@@ -6,7 +6,9 @@ document.getElementById("btnTransferir").addEventListener("click", async () => {
         "Content-Type": "application/json",
       },
       // Adicione dados ao corpo da solicitação, se necessário
-      body: JSON.stringify({ /* seus dados aqui */ }),
+      body: JSON.stringify({
+        /* seus dados aqui */
+      }),
     });
 
     const data = await response.json();
@@ -20,40 +22,27 @@ document.getElementById("btnTransferir").addEventListener("click", async () => {
   }
 });
 
-
 // ------------------------------------------------------------------------------------------ //
 
-/*document
-  .getElementById("btnCreateEmployeesTable")
-  .addEventListener("click", async () => {
-    try {
-      const response = await fetch("/api/create-employees-table"); // Adapte a rota conforme necessário
-      const data = await response.json();
+document.getElementById("btnMostrar").addEventListener("click", async () => {
+  try {
+    const selectedTable = document.getElementById("tableSelect").value;
 
-      const mensagemElement = document.getElementById("mensagem");
-      mensagemElement.textContent = 'Tabela "Employees" criada com sucesso.';
-    } catch (error) {
-      console.error('Erro ao criar tabela "Employees":', error);
-      const mensagemElement = document.getElementById("mensagem");
-      mensagemElement.textContent = 'Erro ao criar tabela "Employees".';
+    if (!selectedTable) {
+      return;
     }
-  });
 
-// ------------------------------------------------------------------------------------------ //
+    const response = await fetch(`/api/get_${selectedTable}`, {
+      method: "GET",
+    });
 
-document
-  .getElementById("btnCreateDepartmentsTable")
-  .addEventListener("click", async () => {
-    try {
-      const response = await fetch("/api/create-departments-table"); // Adapte a rota conforme necessário
-      const data = await response.json();
+    const data = await response.json();
 
-      const mensagemElement = document.getElementById("mensagem");
-      mensagemElement.textContent = 'Tabela "Departments" criada com sucesso.';
-    } catch (error) {
-      console.error('Erro ao criar tabela "Departments":', error);
-      const mensagemElement = document.getElementById("mensagem");
-      mensagemElement.textContent = 'Erro ao criar tabela "Departments".';
-    }
-  });
-*/
+    const mensagemElement = document.getElementById("mensagem");
+    mensagemElement.textContent = JSON.stringify(data);
+  } catch (error) {
+    console.error("Erro ao mostrar dados:", error);
+    const mensagemElement = document.getElementById("mensagem");
+    mensagemElement.textContent = "Erro ao mostrar dados.";
+  }
+});

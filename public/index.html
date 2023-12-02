@@ -1,21 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>M3 - Banco de dados II</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
     <header>
-        <h1>Test Application</h1>
+      <h1>Test Application</h1>
     </header>
 
-    <main>
+    <section id="content">
+      <div>
         <button id="btnTransferir">Transferir Dados</button>
         <p id="mensagem"></p>
-      </main>
-    
-      <script src="script.js"></script>
-</body>
+      </div>
+
+      <div>
+        <label for="tableSelect">Selecione a tabela:</label>
+        <select id="tableSelect">
+          <option value="employees">Employees</option>
+          <option value="departments">Departments</option>
+          <option value="dept_emp">Dept_Emp</option>
+          <option value="dept_manager">Dept_Manager</option>
+          <option value="salaries">Salaries</option>
+          <option value="titles">Titles</option>
+        </select>
+
+        <button id="btnMostrar">Mostrar Dados</button>
+        <p id="mensagem"></p>
+      </div>
+    </section>
+
+    <script src="script.js"></script>
+  </body>
 </html>
