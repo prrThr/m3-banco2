@@ -11,10 +11,10 @@ const PORT = 9037;
 // --------------------------------------------------------------------------------------- //
 
 // Conectar ao MySQL
-mysql.connect(function (err) {
-  if (err) throw err;
-  console.log("Connection with mysql established");
-});
+// mysql.connect(function (err) {
+//   if (err) throw err;
+//   console.log("Connection with mysql established");
+// });
 
 // Conectar ao cliente do Cassandra (Datastax)
 const client = new Client({
@@ -28,12 +28,14 @@ const client = new Client({
 });
 
 // ---------------------------------------------------------------------------------------- //
+// Middleware
 app.use((req, res, next) => {
   req.cassandraClient = client;
   req.server = server;
   next();
 });
 
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Rota para a página principal
 app.get('/', (req, res) => {
@@ -45,8 +47,6 @@ app.use('/api', apiRoutes);
 
 // ---------------------------------------------------------------------------------------- //
 
-// Rodar o servidor de acordo com a porta PORT
-app.use('/api', apiRoutes);
 
 // Rodar o servidor de acordo com a porta PORT
 let server = app.listen(PORT, async () => {

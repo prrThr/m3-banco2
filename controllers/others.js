@@ -1,21 +1,3 @@
-
-
-// ---------------------------------------------------------------------------------- //
-
-async function useM3(req, res) {
-  try {
-    await client.execute("use m3");
-    res.status(200).json({ success: true });
-  } catch (error) {
-    console.error('Erro na operação "use m3":', error);
-    res
-      .status(500)
-      .json({ success: false, error: 'Erro na operação "use m3".' });
-  }
-}
-
-// ---------------------------------------------------------------------------------- //
-
 async function quit(req, res) {
   try {
     await req.cassandraClient.shutdown();
@@ -38,6 +20,5 @@ module.exports = {
 
 
 module.exports = {
-  useM3,
   quit
 }

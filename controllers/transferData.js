@@ -12,7 +12,7 @@ async function transferData(req, res) {
     }
 
     for (const row of results) {
-      const params = ["dept_no", "dept_name"];
+      const params = [];
       await req.cassandraClient.execute(
         "INSERT INTO departments (dept_no, dept_name) VALUES (?, ?) IF NOT EXISTS",
         params,

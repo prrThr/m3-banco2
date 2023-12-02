@@ -1,10 +1,18 @@
 document.getElementById("btnTransferir").addEventListener("click", async () => {
   try {
-    const response = await fetch("/api/get_employees"); // Rota da API que você deseja chamar
+    const response = await fetch("/api/transfer-data", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // Adicione dados ao corpo da solicitação, se necessário
+      body: JSON.stringify({ /* seus dados aqui */ }),
+    });
+
     const data = await response.json();
 
     // Atualize a UI com os dados recebidos
-    const mensagemElement = document.getElementById("Dados transferido HTML");
+    const mensagemElement = document.getElementById("mensagem");
     mensagemElement.textContent = JSON.stringify(data);
   } catch (error) {
     console.error("Erro ao transferir dados:", error);
@@ -13,25 +21,10 @@ document.getElementById("btnTransferir").addEventListener("click", async () => {
   }
 });
 
-// ------------------------------------------------------------------------------------------ //
-
-document.getElementById("btnUseM3").addEventListener("click", async () => {
-  try {
-    const response = await fetch("/api/use-m3"); // Adapte a rota conforme necessário
-    const data = await response.json();
-
-    const mensagemElement = document.getElementById("mensagem");
-    mensagemElement.textContent = 'Operação "use m3" concluída.';
-  } catch (error) {
-    console.error('Erro na operação "use m3":', error);
-    const mensagemElement = document.getElementById("mensagem");
-    mensagemElement.textContent = 'Erro na operação "use m3".';
-  }
-});
 
 // ------------------------------------------------------------------------------------------ //
 
-document
+/*document
   .getElementById("btnCreateEmployeesTable")
   .addEventListener("click", async () => {
     try {
@@ -64,3 +57,4 @@ document
       mensagemElement.textContent = 'Erro ao criar tabela "Departments".';
     }
   });
+*/

@@ -1,6 +1,3 @@
-
-// ---------------------------------------- //
-
 async function selectEmployees (req, res, client) {
   try {
     await client.connect();
@@ -8,7 +5,7 @@ async function selectEmployees (req, res, client) {
     console.log("CLIENT não conseguiu conectar: " + error);
   }
 
-  const sql_select = "select * from employees";
+  const sql_select = "SELECT * FROM employees";
   let query = sql_select;
   let parameters = []; //req.query.customer
   let result = await client.execute(query, parameters);
