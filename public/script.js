@@ -1,6 +1,6 @@
-document.getElementById("btnTransferir").addEventListener("click", async () => {
+document.getElementById("btnSync").addEventListener("click", async () => {
   try {
-    const response = await fetch("/api/transfer-data", {
+    const response = await fetch("/api/sync-data", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -16,9 +16,9 @@ document.getElementById("btnTransferir").addEventListener("click", async () => {
     const mensagemElement = document.getElementById("mensagem");
     mensagemElement.textContent = JSON.stringify(data);
   } catch (error) {
-    console.error("Erro ao transferir dados:", error);
+    console.error("Erro ao sincronizar dados:", error);
     const mensagemElement = document.getElementById("mensagem");
-    mensagemElement.textContent = "Erro ao transferir dados.";
+    mensagemElement.textContent = "Erro ao sincronizar dados.";
   }
 });
 

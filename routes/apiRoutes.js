@@ -1,22 +1,22 @@
 const express = require("express");
 const router = express.Router();
 
-const controllerSelect = require("../controllers/select");
-const controllerQuit = require("../controllers/quit");
-const transfer = require("../controllers/transferData");
+const select = require("../controllers/select");
+const quit = require("../controllers/quit");
+const sync = require("../controllers/sync");
 
 const queries = require("../sql/tables");
 
 
-router.get("/get_employees", (req, res) => controllerSelect.selectAll(req, res, req.cassandraClient, "employees"));
-router.get("/get_departments", (req, res) => controllerSelect.selectAll(req, res, req.cassandraClient, "departments"));
-router.get("/get_dept_emp", (req, res) => controllerSelect.selectAll(req, res, req.cassandraClient, "dept_emp"));
-router.get("/get_dept_manager", (req, res) => controllerSelect.selectAll(req, res, req.cassandraClient, "dept_manager"));
-router.get("/get_salaries", (req, res) => controllerSelect.selectAll(req, res, req.cassandraClient, "salaries"));
-router.get("/get_titles", (req, res) => controllerSelect.selectAll(req, res, req.cassandraClient, "titles"));
+router.get("/get_employees", (req, res) => select.selectAll(req, res, req.cassandraClient, "employees"));
+router.get("/get_departments", (req, res) => select.selectAll(req, res, req.cassandraClient, "departments"));
+router.get("/get_dept_emp", (req, res) => select.selectAll(req, res, req.cassandraClient, "dept_emp"));
+router.get("/get_dept_manager", (req, res) => select.selectAll(req, res, req.cassandraClient, "dept_manager"));
+router.get("/get_salaries", (req, res) => select.selectAll(req, res, req.cassandraClient, "salaries"));
+router.get("/get_titles", (req, res) => select.selectAll(req, res, req.cassandraClient, "titles"));
 
-router.post("/transfer-data", (req, res) => transfer.transferData(req, res, req.cassandraClient, queries.tables));
+router.post("/sync-data", (req, res) => sync.syncData(req, res, req.cassandraClient, queries.tables));
 
-router.get("/quit", controllerQuit.quit);
+router.get("/quit", quit.quit);
 
 module.exports = router;

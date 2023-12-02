@@ -2,15 +2,16 @@
 const mysql = require("../config/mysql");
 mysql.connect(function (err) {
   if (err) throw err;
-  console.log("Connection with MySQL established for transfering data");
+  console.log("Connection with MySQL established for data synchrony");
 });
 
-async function transferData(req, res, client, tables) {
+async function syncData(req, res, client, tables) {
   try {
     for (const table of tables) {
       const { tableName, createTable, tableQuery, insertQuery, tableParams } =
         table;
 
+      console.log(""); // Pular linha
       try {
         await client.execute(createTable);
         console.log(`Tabela ${tableName} criada.`);
@@ -18,7 +19,7 @@ async function transferData(req, res, client, tables) {
         console.error(`Erro ao criar tabela "${tableName}":`, error);
       }
 
-      console.log(`Iniciando a transferência de dados (${tableName})...`);
+      console.log(`Iniciando a sincronia de dados (${tableName})...`);
 
       const [results] = await mysql.promise().query(tableQuery);
 
@@ -49,5 +50,5 @@ async function transferData(req, res, client, tables) {
 }
 
 module.exports = {
-  transferData,
+  syncData
 };
