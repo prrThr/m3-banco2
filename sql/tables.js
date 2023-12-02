@@ -49,7 +49,7 @@ const tables = [
             to_date DATE
           );
           `,
-    tableQuery: "SELECT * FROM dept_emp ORDER BY emp_no",
+    tableQuery: "SELECT * FROM dept_emp ORDER BY emp_no LIMIT 100",
     insertQuery:
       "INSERT INTO dept_emp (emp_no, dept_no, from_date, to_date) VALUES (?, ?, ?, ?)",
     tableParams: ["emp_no", "dept_no", "from_date", "to_date"],
@@ -110,6 +110,6 @@ const tables = [
   }
 ];
 
-modules.export = {
+module.exports = {
     tables
 }

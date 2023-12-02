@@ -5,7 +5,7 @@ const controllerSelect = require("../controllers/select");
 const controllerOthers = require("../controllers/others");
 const transfer = require("../controllers/transferData");
 
-const tables = require("../sql/tables");
+const queries = require("../sql/tables");
 
 
 router.get("/get_employees", (req, res) => controllerSelect.selectEmployees(req, res, req.cassandraClient));
@@ -16,7 +16,7 @@ router.get("/create-departments-table", controllerCreate.createDepartmentsTable)
 
 router.get("/quit", controllerOthers.quit);
 
-router.post("/transfer-data", (req, res) => transfer.transferData(req, res, req.cassandraClient, tables));
+router.post("/transfer-data", (req, res) => transfer.transferData(req, res, req.cassandraClient, queries.tables));
 
 
 module.exports = router;
