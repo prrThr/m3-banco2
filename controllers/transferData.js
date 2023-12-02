@@ -1,25 +1,27 @@
-async function transferData(req, res) {
-  const tableName = "departments"; // Substitua pelo nome da tabela conforme necessário
+// TODO: Procurar alguma maneira de importar o mysql.connect
+const mysql = require("../config/mysql");
+mysql.connect(function (err) {
+  if (err) throw err;
+  console.log("Connection with MySQL established for transfering data");
+});
 
+
+async function transferData(req, res, client, tableName, tableQuery, insertQuery, tableParams) {
   console.log(`Iniciando a transferência de dados (${tableName})...`);
-
   try {
-    const [results] = await req.mysqlConnection.promise().query(`SELECT * FROM ${tableName}`);
-
+    const [results] = await mysql.promise().query(tableQuery);
     if (results.length === 0) {
       console.log(`Nenhum dado novo encontrado na tabela ${tableName}.`);
-      return res.status(200).json({ message: `Nenhum dado novo encontrado na tabela ${tableName}.` });
+      return;
     }
 
     for (const row of results) {
-      const params = [];
-      await req.cassandraClient.execute(
-        "INSERT INTO departments (dept_no, dept_name) VALUES (?, ?) IF NOT EXISTS",
-        params,
-        { prepare: true }
-      );
+      var params = tableParams.map((param) => row[param]);
+      await client.execute(insertQuery, params, {
+        prepare: true,
+      });
 
-      console.log("Dado inserido com sucesso: ", row);
+      console.log("Dado inserido com sucesso: ", row);  
     }
 
     console.log(`Dados da tabela ${tableName} processados com sucesso no Cassandra.`);
@@ -32,4 +34,4 @@ async function transferData(req, res) {
 
 module.exports = {
   transferData
-};
+}

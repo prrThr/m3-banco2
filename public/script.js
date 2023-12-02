@@ -11,7 +11,6 @@ document.getElementById("btnTransferir").addEventListener("click", async () => {
 
     const data = await response.json();
 
-    // Atualize a UI com os dados recebidos
     const mensagemElement = document.getElementById("mensagem");
     mensagemElement.textContent = JSON.stringify(data);
   } catch (error) {
