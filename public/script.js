@@ -57,6 +57,25 @@ document.getElementById("btnMostrar").addEventListener("click", async () => {
 });
 
 // ------------------------------------------------------------------------------------------ //
+function getEmployeesByManager() {
+  const managerId = prompt("Digite o ID do Manager:");
+  if (managerId !== null) {
+    window.location.href = `http://localhost:9037/api/get_employees_by_manager?managerId=${managerId}`;
+  }
+}
+
+function getEmployeesByDepartment() {
+  const departmentId = prompt("Digite o ID do Departamento:");
+  if (departmentId !== null) {
+    window.location.href = `http://localhost:9037/api/get_employees_by_department?departmentId=${departmentId}`;
+  }
+}
+
+function calculateAverageSalary() {
+  // Lógica
+}
+
+// ------------------------------------------------------------------------------------------ //
 
 async function desligarProjeto() {
   try {

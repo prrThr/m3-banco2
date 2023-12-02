@@ -17,6 +17,26 @@
     </div>
 
     <div>
+      <label for="employeesByManager">Employees por manager:</label>
+      <button onclick="getEmployeesByManager()">
+        Selecionar Manager
+      </button>
+
+      <label for="employeesByDepartment">Employees por departamento:</label>
+      <button onclick="getEmployeesByDepartment()">
+        Selecionar Departamento
+      </button>
+
+      <label for="averageSalaryByDepartment">Média salarial por departamento:</label>
+      <button id="averageSalaryByDepartment" onclick="calculateAverageSalary()">
+        Calcular Média
+      </button>
+
+    </div>
+
+    <br />
+
+    <div>
       <label for="tableSelect">Selecione a tabela:</label><br />
       <select id="tableSelect">
         <option value="employees">Employees</option>
