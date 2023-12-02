@@ -57,23 +57,38 @@ document.getElementById("btnMostrar").addEventListener("click", async () => {
 });
 
 // ------------------------------------------------------------------------------------------ //
-function getEmployeesByManager() {
-  const managerId = prompt("Digite o ID do Manager:");
-  if (managerId !== null) {
-    window.location.href = `http://localhost:9037/api/get_employees_by_manager?managerId=${managerId}`;
-  }
+
+document.getElementById('btnEmployeesByManager').addEventListener('click', employeesByManagerHandler);
+document.getElementById('btnEmployeesByDepartment').addEventListener('click', employeesByDepartmentHandler);
+document.getElementById('btnAverageSalary').addEventListener('click', averageSalaryHandler);
+
+function employeesByManagerHandler() {
+    const managerId = prompt("Digite o ID do Manager:");
+    if (managerId !== null) {
+        redirectToApiRoute(`employees_by_manager?managerId=${managerId}`);
+    }
 }
 
-function getEmployeesByDepartment() {
-  const departmentId = prompt("Digite o ID do Departamento:");
-  if (departmentId !== null) {
-    window.location.href = `http://localhost:9037/api/get_employees_by_department?departmentId=${departmentId}`;
+function employeesByDepartmentHandler() {
+  const dept_no = document.getElementById('dept_no').value;
+  const from_date = document.getElementById('from_date').value;
+  const to_date = document.getElementById('to_date').value;
+
+  if (dept_no && from_date && to_date) {
+      redirectToApiRoute(`employees_by_department?dept_no=${dept_no}&from_date=${from_date}&to_date=${to_date}`);
+  } else {
+      alert('Preencha todos os campos antes de clicar no botão');
   }
 }
-
-function calculateAverageSalary() {
-  // Lógica
+function averageSalaryHandler() {
+    redirectToApiRoute('average_salary');
 }
+
+function redirectToApiRoute(route) {
+    const apiUrl = `http://localhost:9037/api/${route}`;
+    window.location.href = apiUrl;
+}
+
 
 // ------------------------------------------------------------------------------------------ //
 

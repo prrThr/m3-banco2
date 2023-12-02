@@ -18,20 +18,28 @@
 
     <div>
       <label for="employeesByManager">Employees por manager:</label>
-      <button onclick="getEmployeesByManager()">
-        Selecionar Manager
-      </button>
+      <button id="btnEmployeesByManager">Selecionar Manager</button>
+      <br />
+      <br />
 
-      <label for="employeesByDepartment">Employees por departamento:</label>
-      <button onclick="getEmployeesByDepartment()">
-        Selecionar Departamento
-      </button>
+      <div>
+        <label for="employeesByDepartment">Employees por departamento:</label>
+        <label for="dept_no">Departamento:</label>
+        <input type="text" id="dept_no" />
 
-      <label for="averageSalaryByDepartment">Média salarial por departamento:</label>
-      <button id="averageSalaryByDepartment" onclick="calculateAverageSalary()">
-        Calcular Média
-      </button>
+        <label for="from_date">Data Inicial:</label>
+        <input type="text" id="from_date" />
 
+        <label for="to_date">Data Final:</label>
+        <input type="text" id="to_date" />
+        <button id="btnEmployeesByDepartment">Selecionar Departamento</button>
+      </div>
+
+      <br />
+      <label for="averageSalaryByDepartment"
+        >Média salarial por departamento:</label
+      >
+      <button id="btnAverageSalary">Calcular Média Salarial</button>
     </div>
 
     <br />
