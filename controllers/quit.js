@@ -15,10 +15,5 @@ async function quit(req, res) {
 }
 
 module.exports = {
-  quit
+  quit,
 };
-
-
-module.exports = {
-  quit
-}

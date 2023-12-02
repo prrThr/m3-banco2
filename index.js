@@ -7,6 +7,7 @@ const path = require('path');
 
 const app = express();
 const PORT = 9037;
+const keyspace = datastax.keyspace
 
 // --------------------------------------------------------------------------------------- //
 
@@ -28,7 +29,7 @@ const client = new Client({
 });
 
 // ---------------------------------------------------------------------------------------- //
-// Middleware
+// Middlewares
 app.use((req, res, next) => {
   req.cassandraClient = client;
   req.server = server;
@@ -47,20 +48,15 @@ app.use('/api', apiRoutes);
 
 // ---------------------------------------------------------------------------------------- //
 
-
-// Rodar o servidor de acordo com a porta PORT
 let server = app.listen(PORT, async () => {
   try {
-    // Conectar ao Cassandra
     await client.connect();
     console.log("Connected to Cassandra");
 
-    // Executar o comando USE m3
-    await client.execute("USE m3");
-    console.log("Using keyspace 'm3'");
+    await client.execute(`USE ${keyspace}`);
+    console.log(`Using keyspace ${keyspace}`);
   } catch (error) {
     console.error("Error connecting to Cassandra:", error);
-    // Encerrar o servidor se houver um erro na conexão com o Cassandra
     server.close();
   }
   console.log("Server running in port " + PORT);

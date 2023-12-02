@@ -1,4 +1,4 @@
-require('dotenv').config();
+require("dotenv").config();
 const mysql = require("mysql2");
 
 const IP = process.env.MYSQL_IP;
@@ -10,7 +10,7 @@ let con = mysql.createConnection({
   host: IP,
   user: LOGIN,
   password: PASSWORD,
-  database: DATABASE
+  database: DATABASE,
 });
 
 module.exports = con;

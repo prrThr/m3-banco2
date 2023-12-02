@@ -23,6 +23,7 @@ document.getElementById("btnTransferir").addEventListener("click", async () => {
 });
 
 // ------------------------------------------------------------------------------------------ //
+
 document.getElementById("btnMostrar").addEventListener("click", async () => {
   try {
     const selectedTable = document.getElementById("tableSelect").value;
@@ -54,3 +55,33 @@ document.getElementById("btnMostrar").addEventListener("click", async () => {
     mensagemElement.textContent = "Erro ao mostrar dados.";
   }
 });
+
+// ------------------------------------------------------------------------------------------ //
+
+async function desligarProjeto() {
+  try {
+    const response = await fetch("/api/quit", {
+      method: "GET",
+    });
+
+    const mensagemElement = document.getElementById("mensagem");
+
+    if (response.ok) {
+      mensagemElement.textContent = "Desligando o projeto...";
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
+    } else {
+      mensagemElement.textContent = `Erro ao desligar o projeto. Status: ${response.status}`;
+    }
+
+    return response.status;
+  } catch (error) {
+    console.error("Erro ao desligar o projeto:", error);
+    const mensagemElement = document.getElementById("mensagem");
+    mensagemElement.textContent = "Erro ao desligar o projeto.";
+
+    return 500; // Erro interno do servidor
+  }
+}

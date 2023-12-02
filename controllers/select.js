@@ -13,7 +13,6 @@ async function selectAll(req, res, client, tableName) {
     let result = await client.execute(query, parameters);
     console.log("total sync: ", result.rows.length);
 
-    // Configura os cabeçalhos antes de enviar a resposta
     res.setHeader("Content-Type", "application/json");
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader(
@@ -29,10 +28,12 @@ async function selectAll(req, res, client, tableName) {
     res.status(200).json(result.rows);
   } catch (error) {
     console.error(`Erro ao executar a consulta (${tableName}):`, error);
-    res.status(500).json({ error: `Erro ao executar a consulta (${tableName}).` });
+    res
+      .status(500)
+      .json({ error: `Erro ao executar a consulta (${tableName}).` });
   }
 }
 
 module.exports = {
-  selectAll
+  selectAll,
 };

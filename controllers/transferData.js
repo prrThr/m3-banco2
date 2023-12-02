@@ -8,11 +8,12 @@ mysql.connect(function (err) {
 async function transferData(req, res, client, tables) {
   try {
     for (const table of tables) {
-      const { tableName, createTable, tableQuery, insertQuery, tableParams } = table;
+      const { tableName, createTable, tableQuery, insertQuery, tableParams } =
+        table;
 
       try {
         await client.execute(createTable);
-        console.log(`Tabela ${tableName} criada.`)
+        console.log(`Tabela ${tableName} criada.`);
       } catch (error) {
         console.error(`Erro ao criar tabela "${tableName}":`, error);
       }
