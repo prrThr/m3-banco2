@@ -115,23 +115,16 @@ async function averageSalary(client) {
       departmentData[dept_no].count++;
     }
 
-    const averageSalariesByDepartment = {};
-    const departments = Object.keys(departmentData).sort();
+    const result = {
+      departments: Object.keys(departmentData).map((dept_no) => ({
+        dept_no,
+        totalSalary: departmentData[dept_no].totalSalary,
+        count: departmentData[dept_no].count,
+      })),
+    };
 
-    console.log("DEPARTMENT DATA: ");
-    departments.forEach((dept) => {
-      console.log(`Departament: ${dept}`);
-      console.log(`Total salary: ${departmentData[dept].totalSalary}`);
-      console.log(`Count: ${departmentData[dept].count}`);
-      console.log();
-    });
-
-    departments.forEach((dept_no) => {
-      averageSalariesByDepartment[dept_no] =
-        departmentData[dept_no].totalSalary / departmentData[dept_no].count;
-    });
-
-    console.log("Average salary by department:", averageSalariesByDepartment);
+    console.log("Average salary by department:", result);
+    res.redirect("/average_salary_results");return result;
   } catch (error) {
     console.error("Erro ao executar a consulta:", error);
   }

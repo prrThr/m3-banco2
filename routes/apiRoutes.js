@@ -43,9 +43,18 @@ router.get("/employees_by_department", (req, res) => {
   queries.employeesByDepartment( req, res, req.cassandraClient, dept_no, from_date, to_date);
 });
 
-router.get("/average_salary", (req, res) => {
-  queries.averageSalary(req.cassandraClient);
+router.get("/average_salary_results", async (req, res) => {
+  try {
+    const data = await queries.averageSalary(req.cassandraClient);
+    res.render("averageSalaryPage", { data });
+  } catch (error) {
+    console.error("Erro ao renderizar a página de média salarial:", error);
+    res.status(500).json({ error: "Erro ao renderizar a página de média salarial." });
+  }
 });
+
+// ...
+
 
 // ---------------------------------------------------------------- //
 

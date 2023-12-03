@@ -1,4 +1,68 @@
-#btnDesligar {
-    background-color: red;
-    color:white;
-}
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+  
+  header {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+  }
+  
+  button {
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+  }
+  
+  .subtitulo {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  #btnSync {
+    background-color: #ff9800; /* cor mais chamativa */
+  }
+  
+  #btnDesligar {
+    background-color: #ff0000; /* cor vermelha */
+    color: white;
+  }
+  
+  #employeesDept {
+    margin-top: 20px;
+  }
+  
+  label {
+    display: block;
+    margin-top: 10px;
+  }
+  
+  input {
+    margin-bottom: 10px;
+    padding: 5px;
+  }
+  
+  #btnEmployeesByDepartment {
+    background-color: #4caf50; /* cor mais chamativa */
+    color: white;
+  }
+  
+  #btnAverageSalary {
+    background-color: #2196f3; /* cor mais chamativa */
+    color: white;
+  }
+  
+  #tableSelect {
+    margin-top: 10px;
+    padding: 5px;
+  }
+  
+  #btnMostrar {
+    background-color: #9c27b0; /* cor mais chamativa */
+    color: white;
+  }
+  
