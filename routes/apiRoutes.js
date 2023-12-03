@@ -32,11 +32,11 @@ router.get("/get_titles", (req, res) =>
 // ---------------------------------------------------------------- //
 
 router.get("/employees_by_manager", (req, res) => {
-  select.selectAll(req, res, req.cassandraClient, "employees_per_manager")
+  select.employeesByManager(req, res, req.cassandraClient)
 });
 
 router.get("/employees_by_department", (req, res) => {
-  select.selectAll(req, res, req.cassandraClient, "employees_per_department")
+  select.selectAll(req, res, req.cassandraClient, "employees_by_department")
 });
 
 router.get("/average_salary", (req, res) =>

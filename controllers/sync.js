@@ -30,12 +30,14 @@ async function syncData(req, res, client, tables) {
         continue;
       }
 
+      let i = 0;
       for (const row of results) {
         const params = tableParams.map((param) => row[param]);
         await client.execute(insertQuery, params, {
           prepare: true,
         });
-        //console.log("Dado inserido com sucesso: ", row);
+        console.log("+", i);
+        i++;
       }
 
       console.log(
