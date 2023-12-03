@@ -85,7 +85,7 @@ async function employeesByDepartment(
 // c) Retorne a média salarial de todos os employees por departamento.
 //    * O retorno da consulta deve retornar todos os campos (6 ao total)
 //    presentes na tabela employee do modelo relacional.
-async function averageSalary(req, res, client) {
+async function averageSalary(client) {
   try {
     const allEmployeesQuery = "SELECT emp_no, dept_no FROM dept_emp";
     const allEmployeesResult = await client.execute(allEmployeesQuery);

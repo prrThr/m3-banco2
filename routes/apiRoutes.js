@@ -44,7 +44,7 @@ router.get("/employees_by_department", (req, res) => {
 });
 
 router.get("/average_salary", (req, res) => {
-  queries.averageSalary(req, res, req.cassandraClient);
+  queries.averageSalary(req.cassandraClient);
 });
 
 // ---------------------------------------------------------------- //
