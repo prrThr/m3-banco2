@@ -52,11 +52,20 @@ async function employeesByDepartment(
     console.log("CLIENT não conseguiu conectar: " + error);
   }
 
-  const query = `SELECT * FROM m3.employees WHERE emp_no IN (SELECT emp_no FROM m3.dept_emp WHERE dept_no = ${dept_no} AND from_date <= ${from_date} AND to_date >= ${to_date});`;
-  let parameters = [];
+  const query = `
+    SELECT * 
+    FROM employees 
+    WHERE emp_no IN (
+      SELECT emp_no 
+      FROM dept_emp 
+      WHERE dept_no = ? AND from_date <= ? AND to_date >= ?
+    )`;
+
+  const parameters = [dept_no, from_date, to_date];
 
   try {
-    let result = await client.execute(query, parameters);
+    const result = await client.execute(query, parameters);
+
     console.log("total sync: ", result.rows.length);
 
     res.setHeader("Content-Type", "application/json");
@@ -74,18 +83,18 @@ async function employeesByDepartment(
     res.status(200).json(result.rows);
   } catch (error) {
     console.error(`Erro ao executar a consulta (${dept_no}):`, error);
-    res
-      .status(500)
-      .json({ error: `Erro ao executar a consulta (${dept_no}).` });
+    res.status(500).json({ error: `Erro ao executar a consulta (${dept_no}).` });
   }
 }
+
+
 
 // -----------------------------------------------------------------------------//
 
 // c) Retorne a média salarial de todos os employees por departamento.
 //    * O retorno da consulta deve retornar todos os campos (6 ao total)
 //    presentes na tabela employee do modelo relacional.
-async function averageSalary(client) {
+async function averageSalary(req, res, client) {
   try {
     const allEmployeesQuery = "SELECT emp_no, dept_no FROM dept_emp";
     const allEmployeesResult = await client.execute(allEmployeesQuery);
@@ -115,20 +124,34 @@ async function averageSalary(client) {
       departmentData[dept_no].count++;
     }
 
-    const result = {
-      departments: Object.keys(departmentData).map((dept_no) => ({
-        dept_no,
-        totalSalary: departmentData[dept_no].totalSalary,
-        count: departmentData[dept_no].count,
-      })),
-    };
+    const averageSalariesByDepartment = {};
+    const departments = Object.keys(departmentData).sort();
 
-    console.log("Average salary by department:", result);
-    res.redirect("/average_salary_results");return result;
+    let logInfo = "DEPARTMENT DATA:\n";
+
+    departments.forEach((dept) => {
+      logInfo += `Departament: ${dept}\n`;
+      logInfo += `Total salary: ${departmentData[dept].totalSalary}\n`;
+      logInfo += `Count: ${departmentData[dept].count}\n\n`;
+    });
+
+    console.log(logInfo);
+
+    departments.forEach((dept_no) => {
+      averageSalariesByDepartment[dept_no] =
+        departmentData[dept_no].totalSalary / departmentData[dept_no].count;
+    });
+
+    res.status(200).json({
+      departmentData: departmentData,
+      averageSalaryByDepartment: averageSalariesByDepartment,
+    });
   } catch (error) {
     console.error("Erro ao executar a consulta:", error);
+    res.status(500).json({ error: "Erro ao executar a consulta." });
   }
 }
+
 
 // -----------------------------------------------------------------------------//
 

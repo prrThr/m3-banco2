@@ -61,7 +61,7 @@ function employeesByDepartmentHandler() {
   }
 }
 function averageSalaryHandler() {
-  redirectToApiRoute("average_salary_results");
+  redirectToApiRoute("average_salary");
 }
 
 function redirectToApiRoute(route) {
