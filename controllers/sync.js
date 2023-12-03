@@ -8,13 +8,15 @@ mysql.connect(function (err) {
 async function syncData(req, res, client, tables) {
   try {
     for (const table of tables) {
-      const { tableName, createTable, tableQuery, insertQuery, tableParams } =
+      const { tableName, createTable, tableQuery, insertQuery, createIndex, tableParams } =
         table;
 
       console.log(""); // Pular linha
       try {
         await client.execute(createTable);
         console.log(`Tabela ${tableName} criada.`);
+        await client.execute(createIndex);
+        console.log(`Index criado.`);
       } catch (error) {
         console.error(`Erro ao criar tabela "${tableName}":`, error);
       }
@@ -33,7 +35,6 @@ async function syncData(req, res, client, tables) {
         await client.execute(insertQuery, params, {
           prepare: true,
         });
-
         //console.log("Dado inserido com sucesso: ", row);
       }
 

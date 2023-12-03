@@ -32,15 +32,11 @@ router.get("/get_titles", (req, res) =>
 // ---------------------------------------------------------------- //
 
 router.get("/employees_by_manager", (req, res) => {
-  console.log("Req query: ". req.query);
-  const { managerId } = req.query;
-  console.log("Manager ID : ", managerId);
-  queries.employeesByManager(req, res, req.cassandraClient, managerId);
+  select.selectAll(req, res, req.cassandraClient, "employees_per_manager")
 });
 
 router.get("/employees_by_department", (req, res) => {
-  const { dept_no, from_date, to_date } = req.query;
-  queries.employeesByDepartment( req, res, req.cassandraClient, dept_no, from_date, to_date);
+  select.selectAll(req, res, req.cassandraClient, "employees_per_department")
 });
 
 router.get("/average_salary", (req, res) =>
