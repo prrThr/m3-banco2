@@ -1,5 +1,5 @@
 const tables = [
-  /*{
+  {
     tableName: "employees",
     createTable: `
         CREATE TABLE IF NOT EXISTS employees (
@@ -43,7 +43,7 @@ const tables = [
       "from_date",
       "to_date"
     ],
-  },*/
+  },
   {
     tableName: "employees_salaries",
     createTable: `
