@@ -51,7 +51,7 @@ router.get("/average_salary", (req, res) =>
 // ---------------------------------------------------------------- //
 
 router.post("/sync-data", (req, res) =>
-  sync.syncData(req, res, req.cassandraClient, tablesQueries.tables)
+  sync.syncData(req, res, req.cassandraClient, req.mysqlCon,tablesQueries.tables)
 );
 router.get("/quit", quit.quit);
 

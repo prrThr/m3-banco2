@@ -11,12 +11,6 @@ const keyspace = datastax.keyspace
 
 // --------------------------------------------------------------------------------------- //
 
-// Conectar ao MySQL
-// mysql.connect(function (err) {
-//   if (err) throw err;
-//   console.log("Connection with mysql established");
-// });
-
 // Conectar ao cliente do Cassandra (Datastax)
 const client = new Client({
   cloud: {
@@ -29,10 +23,12 @@ const client = new Client({
 });
 
 // ---------------------------------------------------------------------------------------- //
+
 // Middlewares
 app.use((req, res, next) => {
   req.cassandraClient = client;
   req.server = server;
+  req.mysqlCon = mysql;
   next();
 });
 
@@ -50,6 +46,11 @@ app.use('/api', apiRoutes);
 
 let server = app.listen(PORT, async () => {
   try {
+    mysql.connect(function (err) {
+      if (err) throw err;
+      console.log("Connection with MySQL established.");
+    });
+    
     await client.connect();
     console.log("Connected to Cassandra");
 

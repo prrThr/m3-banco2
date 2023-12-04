@@ -1,29 +1,32 @@
-// TODO: Procurar alguma maneira de importar o mysql.connect
-const mysql = require("../config/mysql");
-mysql.connect(function (err) {
-  if (err) throw err;
-  console.log("Connection with MySQL established for data synchrony");
-});
-
-async function syncData(req, res, client, tables) {
+async function syncData(req, res, client, mysql, tables) {
   try {
     for (const table of tables) {
-      const { tableName, createTable, tableQuery, insertQuery, createIndex, tableParams } =
+      const { tableName, createTable, sqlQuery, insertQuery, tableParams } =
         table;
 
       console.log(""); // Pular linha
       try {
         await client.execute(createTable);
         console.log(`Tabela ${tableName} criada.`);
-        await client.execute(createIndex);
-        console.log(`Index criado.`);
+
+        if (tableName === "employees") {
+          await client.execute("CREATE INDEX ON employees (dept_no);");
+          await client.execute("CREATE INDEX ON employees (dept_name);");
+          await client.execute("CREATE INDEX ON employees (from_date);");
+          await client.execute("CREATE INDEX ON employees (to_date);");
+        } else if (tableName === "employees_salaries") {
+          await client.execute("CREATE INDEX ON employees_salaries (salary)");
+          await client.execute("CREATE INDEX ON employees_salaries (dept_no)");
+        }
+
+        console.log(`Indices criados`);
       } catch (error) {
         console.error(`Erro ao criar tabela "${tableName}":`, error);
       }
 
       console.log(`Iniciando a sincronia de dados (${tableName})...`);
 
-      const [results] = await mysql.promise().query(tableQuery);
+      const [results] = await mysql.promise().query(sqlQuery);
 
       if (results.length === 0) {
         console.log(`Nenhum dado novo encontrado na tabela ${tableName}.`);
@@ -53,5 +56,5 @@ async function syncData(req, res, client, tables) {
 }
 
 module.exports = {
-  syncData
+  syncData,
 };
