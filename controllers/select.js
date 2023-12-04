@@ -5,8 +5,8 @@ async function selectAll(req, res, client, tableName) {
     console.log("CLIENT não conseguiu conectar: " + error);
   }
 
-  const sql_select = `SELECT * FROM ${tableName}`;
-  let query = sql_select;
+  const cql_select = `SELECT * FROM ${tableName}`;
+  let query = cql_select;
   let parameters = [];
 
   try {
@@ -34,19 +34,27 @@ async function selectAll(req, res, client, tableName) {
   }
 }
 
-async function employeesByManager(req, res, client) {
+
+
+async function employeesByDepartment(req, res, client, dept_name, from_date, to_date) {
+
   try {
     await client.connect();
   } catch (error) {
     console.log("CLIENT não conseguiu conectar: " + error);
   }
 
-  const sql_select = `SELECT * FROM employees_and_manager WHERE dept_no = 'd009';`;
-  let query = sql_select;
+  console.log("Request dept_name: ", dept_name);
+  console.log("Request from_date", from_date);
+  console.log("Request to_date", to_date);
+
+  const cql_select = `SELECT * FROM employees_and_manager WHERE dept_name = '${dept_name}' AND from_date >= '${from_date}' AND to_date <= '${to_date}';`;
+  let query = cql_select;
   let parameters = [];
 
   try {
     let result = await client.execute(query, parameters);
+    console.log("RESULT: ", cql_select)
     console.log("total sync: ", result.rows.length);
 
     res.setHeader("Content-Type", "application/json");
@@ -63,14 +71,15 @@ async function employeesByManager(req, res, client) {
 
     res.status(200).json(result.rows);
   } catch (error) {
-    console.error(`Erro ao executar a consulta (${tableName}):`, error);
+    console.error(`Erro ao executar a consulta:`, error);
     res
       .status(500)
-      .json({ error: `Erro ao executar a consulta (${tableName}).` });
+      .json({ error: `Erro ao executar a consulta.` });
   }
 }
 
 module.exports = {
   selectAll,
-  employeesByManager,
+  employeesByDepartment,
 };
+

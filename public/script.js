@@ -48,13 +48,13 @@ function employeesByManagerHandler() {
 }
 
 function employeesByDepartmentHandler() {
-  const dept_no = document.getElementById("dept_no").value;
+  const dept_name = document.getElementById("dept_name").value;
   const from_date = document.getElementById("from_date").value;
   const to_date = document.getElementById("to_date").value;
 
-  if (dept_no && from_date && to_date) {
+  if (dept_name && from_date && to_date) {
     redirectToApiRoute(
-      `employees_by_department?dept_no=${dept_no}&from_date=${from_date}&to_date=${to_date}`
+      `employees_by_department?dept_name=${dept_name}&from_date=${from_date}&to_date=${to_date}`
     );
   } else {
     alert("Preencha todos os campos antes de clicar no botão");

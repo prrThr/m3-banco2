@@ -36,7 +36,10 @@ router.get("/employees_by_manager", (req, res) => {
 });
 
 router.get("/employees_by_department", (req, res) => {
-  select.selectAll(req, res, req.cassandraClient, "employees_by_department")
+  const dept_name = req.query.dept_name;
+  const from_date = req.query.from_date;
+  const to_date = req.query.to_date;
+  select.employeesByDepartment(req, res, req.cassandraClient, dept_name, from_date, to_date)
 });
 
 router.get("/average_salary", (req, res) =>
