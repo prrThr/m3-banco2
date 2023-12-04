@@ -1,22 +1,26 @@
 document.getElementById("btnSync").addEventListener("click", async () => {
   try {
+    const loadingIndicator = document.getElementById("loadingIndicator");
+    loadingIndicator.style.display = "block";
+
     const response = await fetch("/api/sync-data", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-
       body: JSON.stringify({}),
     });
 
     const data = await response.json();
-
     const mensagemElement = document.getElementById("mensagem");
     mensagemElement.textContent = JSON.stringify(data);
   } catch (error) {
     console.error("Erro ao sincronizar dados:", error);
     const mensagemElement = document.getElementById("mensagem");
     mensagemElement.textContent = "Erro ao sincronizar dados.";
+  } finally {
+    const loadingIndicator = document.getElementById("loadingIndicator");
+    loadingIndicator.style.display = "none";
   }
 });
 
