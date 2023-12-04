@@ -8,7 +8,7 @@
   </head>
   <body>
     <header>
-      <h1>Migration from MySQL to Cassandra</h1>
+      <h1>Sincronização entre MySQL e Cassandra</h1>
     </header>
 
     <div>
@@ -17,14 +17,14 @@
     </div>
 
     <div>
-      <label for="employeesByManager" class="subtitulo">Employees por manager:</label>
-      <button id="btnEmployeesByManager">Selecionar Manager</button>
+      <label for="employeesByManager" class="subtitulo">Empregados por gerente:</label>
+      <button id="btnEmployeesByManager">Selecionar gerente</button>
       <br />
       <br />
       <br />
 
       <div id="employeesDept">
-        <label for="employeesByDepartment" class="subtitulo">Employees por departamento:</label>
+        <label for="employeesByDepartment" class="subtitulo">Empregados por departamento:</label>
         <br />
         <label for="dept_name">Departamento:</label>
         <input type="text" id="dept_name" />
@@ -34,7 +34,7 @@
         <br />
         <label for="to_date">Data Final:</label>
         <input type="text" id="to_date" />
-        <button id="btnEmployeesByDepartment">Selecionar Departamento</button>
+        <button id="btnEmployeesByDepartment">Selecionar departamento</button>
       </div>
 
       <br />
@@ -43,7 +43,7 @@
       <label for="averageSalaryByDepartment" class="subtitulo"
         >Média salarial por departamento:</label
       >
-      <button id="btnAverageSalary">Calcular Média Salarial</button>
+      <button id="btnAverageSalary">Calcular média salarial</button>
     </div>
 
     <br />
@@ -51,12 +51,8 @@
     <div>
       <label for="tableSelect" class="subtitulo">Selecione a tabela:</label><br />
       <select id="tableSelect">
-        <option value="employees">Employees</option>
-        <option value="departments">Departments</option>
-        <option value="dept_emp">Dept_Emp</option>
-        <option value="dept_manager">Dept_Manager</option>
-        <option value="salaries">Salaries</option>
-        <option value="titles">Titles</option>
+        <option value="employees">Empregados</option>
+        <option value="employees_salaries">Empregados e Salarios</option>
       </select>
 
       <button id="btnMostrar">Mostrar Dados</button>

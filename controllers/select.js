@@ -117,8 +117,14 @@ async function employeesByDepartment(req, res, client, dept_name, from_date, to_
 
 // ----------------------------------------------------------------------------------------- //
 
+async function averageSalary(req, res, client, dept_no, salary) {}
+
+// ----------------------------------------------------------------------------------------- //
+
 module.exports = {
   selectAll,
+  employeesByManager,
   employeesByDepartment,
+  averageSalary
 };
 
