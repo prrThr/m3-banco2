@@ -57,15 +57,14 @@ async function syncData(req, res, client, mysql, tables) {
         let i = 0;
         for (const row of results) {
           const params = tableParams.map((param) => row[param]);
-          await client.execute(insertQuery, params, {
+          client.execute(insertQuery, params, {
             prepare: true,
           });
-          console.log("+", i);
           i++;
         }
 
         console.log(
-          `Dados da tabela ${tableName} processados com sucesso no Cassandra.`
+          `${i} dados da tabela ${tableName} processados com sucesso no Cassandra.`
         );
       }
     }

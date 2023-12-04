@@ -21,7 +21,7 @@ const tables = [
           ON emp.emp_no = dept_emp.emp_no 
         LEFT JOIN departments dep 
           ON dep.dept_no = dept_emp.dept_no
-          LIMIT 200;
+          LIMIT 500;
       `,
     insertQuery:
       `
@@ -45,11 +45,12 @@ const tables = [
     tableName: "employees_salaries",
     createTable: `
     CREATE TABLE IF NOT EXISTS employees_salaries (
-      emp_no INT PRIMARY KEY,
+      emp_no INT,
       first_name TEXT,
       last_name TEXT,
       dept_no TEXT,
-      salary INT
+      salary INT,
+      PRIMARY KEY (emp_no, dept_no)
     );
     `,
     sqlQuery: `
